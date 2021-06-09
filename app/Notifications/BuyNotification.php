@@ -32,7 +32,7 @@ class BuyNotification extends Notification
     public function toTelegram($notifiable): TelegramMessage
     {
         return TelegramMessage::create()
-            ->content('Super trend *BUY* alert. Alert time: ' . Carbon::now())
+            ->content('Super trend *BUY* alert. Alert time: ' . Carbon::now() . "\n" . json_encode(request()->toArray()))
             ->button('Open trading view', 'https://www.tradingview.com');
     }
 }

@@ -25,8 +25,8 @@ class Trade extends Model
     public const LONG_TYPE = 1;
     public const SHORT_TYPE = 2;
 
-    public const LONG_TYPE_LITERALLY = 'SHORT';
-    public const SHORT_TYPE_LITERALLY = 'LONG';
+    public const LONG_TYPE_LITERALLY = 'LONG';
+    public const SHORT_TYPE_LITERALLY = 'SHORT';
     /**
      * @var array
      */
@@ -44,6 +44,6 @@ class Trade extends Model
      */
     public function getTypeLiterallyAttribute(): string
     {
-        return $this->type === self::LONG_TYPE ? self::LONG_TYPE_LITERALLY : self::SHORT_TYPE_LITERALLY;
+        return $this->type == self::LONG_TYPE ? self::LONG_TYPE_LITERALLY : self::SHORT_TYPE_LITERALLY;
     }
 }

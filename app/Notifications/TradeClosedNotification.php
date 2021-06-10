@@ -41,13 +41,13 @@ class TradeClosedNotification extends Notification
     public function toTelegram(): TelegramMessage
     {
         $message = "Trade closed:\n" .
-            'Trade type:' . $this->trade->type_literally . "\n" .
-            'Entry price:' . $this->trade->entry_price . "\n" .
-            'Entry time:' . $this->trade->entry_time . "\n" .
-            'Exit price:' . $this->trade->exit_price . "\n" .
-            'Exit time:' . $this->trade->exit_time . "\n" .
-            'PLN:' . $this->trade->pln . "\n" .
-            'Total PLN:' . $this->getTotalPln();
+            'Trade type: *' . $this->trade->type_literally . "*\n" .
+            'Entry price: ' . $this->trade->entry_price . "\n" .
+            'Entry time: ' . $this->trade->entry_time . "\n" .
+            'Exit price: ' . $this->trade->exit_price . "\n" .
+            'Exit time: ' . $this->trade->exit_time . "\n" .
+            'PLN: ' . $this->trade->pln . "\n" .
+            'Total PLN: ' . $this->getTotalPln();
 
         return TelegramMessage::create()
             ->content($message);

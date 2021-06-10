@@ -41,8 +41,8 @@ class TradeOpenedNotification extends Notification
     public function toTelegram(): TelegramMessage
     {
         $message = "*" . $this->trade->type_literally ."* trade opened:\n" .
-            'Entry price:' . $this->trade->entry_price . "\n" .
-            'Entry time:' . $this->trade->entry_time . "\n";
+            'Entry price: ' . $this->trade->entry_price . "\n" .
+            'Entry time: ' . $this->trade->entry_time . "\n";
 
         return TelegramMessage::create()
             ->content($message)

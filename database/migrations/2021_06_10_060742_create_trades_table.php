@@ -19,9 +19,9 @@ class CreateTradesTable extends Migration
             $table->id();
             $table->string('type');
             $table->float('entry_price');
-            $table->float('entry_time');
+            $table->timestamp('entry_time');
             $table->float('exit_price')->nullable();
-            $table->float('exit_time')->nullable();
+            $table->timestamp('exit_time')->nullable();
             $table->float('pln')->nullable();
             $table->timestamps();
         });

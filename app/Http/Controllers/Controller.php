@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Trade;
+use App\Notifications\TradeOpenedNotification;
 use App\Notifications\TradeClosedNotification;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
-use App\Notifications\BuyNotification;
-use App\Notifications\SellNotification;
 use App\Utils\TradeService\TradeService;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -50,10 +49,10 @@ class Controller extends BaseController
             Notification::route('telegram', self::CHAT_ID)
                 ->notify(new TradeClosedNotification($previousTrade));
         }
-        $this->tradeService->create(Trade::LONG_TYPE, $request->input('price'));
+        $trade = $this->tradeService->create(Trade::LONG_TYPE, $request->input('price'));
 
         Notification::route('telegram', self::CHAT_ID)
-            ->notify(new BuyNotification);
+            ->notify(new TradeOpenedNotification($trade));
 
         return response()->json();
     }
@@ -69,10 +68,10 @@ class Controller extends BaseController
             $pln = $request->input('price') - $previousTrade->entry_price;
             $this->tradeService->update($previousTrade, $request->input('price'), $pln);
         }
-        $this->tradeService->create(Trade::SHORT_TYPE, $request->input('price'));
+        $trade = $this->tradeService->create(Trade::SHORT_TYPE, $request->input('price'));
 
         Notification::route('telegram', self::CHAT_ID)
-            ->notify(new SellNotification);
+            ->notify(new TradeOpenedNotification($trade));
 
         return response()->json();
     }

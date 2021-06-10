@@ -2,19 +2,30 @@
 
 namespace App\Notifications;
 
-use Carbon\Carbon;
+use App\Models\Trade;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Telegram\TelegramChannel;
 use NotificationChannels\Telegram\TelegramMessage;
 
 /**
- * Class SellNotification
+ * Class ShortTradeOpenedNotification
  * @package App\Notifications
  */
-class SellNotification extends Notification
+class TradeOpenedNotification extends Notification
 {
     use Queueable;
+
+    private Trade $trade;
+
+    /**
+     * TradeCloseNotification constructor.
+     * @param Trade $trade
+     */
+    public function __construct(Trade $trade)
+    {
+        $this->trade = $trade;
+    }
 
     /**
      * @return array
@@ -29,9 +40,10 @@ class SellNotification extends Notification
      */
     public function toTelegram(): TelegramMessage
     {
-        $message = "Super trend *SELL* alert.\n" .
-            "Alert time: " . Carbon::now() . "\n" .
-            "Price: " . request()->input('price');
+        $type = $this->trade->type ? 'SHORT' : 'LONG';
+        $message = "*$type* trade opened:\n" .
+            'Entry price:' . $this->trade->entry_price . "\n" .
+            'Entry time:' . $this->trade->entry_time . "\n";
 
         return TelegramMessage::create()
             ->content($message)

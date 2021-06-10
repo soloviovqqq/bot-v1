@@ -17,7 +17,7 @@ class CreateTradesTable extends Migration
     {
         Schema::create('trades', function (Blueprint $table) {
             $table->id();
-            $table->string('type');
+            $table->tinyInteger('type');
             $table->float('entry_price');
             $table->timestamp('entry_time');
             $table->float('exit_price')->nullable();

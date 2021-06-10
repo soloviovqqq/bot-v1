@@ -67,6 +67,9 @@ class Controller extends BaseController
         if ($previousTrade) {
             $pln = $request->input('price') - $previousTrade->entry_price;
             $this->tradeService->update($previousTrade, $request->input('price'), $pln);
+
+            Notification::route('telegram', self::CHAT_ID)
+                ->notify(new TradeClosedNotification($previousTrade));
         }
         $trade = $this->tradeService->create(Trade::SHORT_TYPE, $request->input('price'));
 

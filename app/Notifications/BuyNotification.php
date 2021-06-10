@@ -17,22 +17,24 @@ class BuyNotification extends Notification
     use Queueable;
 
     /**
-     * @param $notifiable
      * @return array
      */
-    public function via($notifiable): array
+    public function via(): array
     {
         return [TelegramChannel::class];
     }
 
     /**
-     * @param $notifiable
      * @return TelegramMessage
      */
-    public function toTelegram($notifiable): TelegramMessage
+    public function toTelegram(): TelegramMessage
     {
+        $message = "Super trend *BUY* alert.\n" .
+            "Alert time: " . Carbon::now() . "\n" .
+            "Price: " . request()->input('price');
+
         return TelegramMessage::create()
-            ->content('Super trend *BUY* alert. Alert time: ' . Carbon::now() . "\n" . json_encode(request()->toArray()))
+            ->content($message)
             ->button('Open trading view', 'https://www.tradingview.com');
     }
 }

@@ -22,8 +22,6 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public const CHAT_ID = -553452018;
-
     private TradeService $tradeService;
 
     /**
@@ -46,12 +44,12 @@ class Controller extends BaseController
             $pln = $previousTrade->entry_price - $request->input('price');
             $this->tradeService->update($previousTrade, $request->input('price'), $pln);
 
-            Notification::route('telegram', self::CHAT_ID)
+            Notification::route('telegram', config('services.telegram-bot-api.telegram_bot_chat_id'))
                 ->notify(new TradeClosedNotification($previousTrade));
         }
         $trade = $this->tradeService->create(Trade::LONG_TYPE, $request->input('price'));
 
-        Notification::route('telegram', self::CHAT_ID)
+        Notification::route('telegram', config('services.telegram-bot-api.telegram_bot_chat_id'))
             ->notify(new TradeOpenedNotification($trade));
 
         return response()->json();
@@ -68,12 +66,12 @@ class Controller extends BaseController
             $pln = $request->input('price') - $previousTrade->entry_price;
             $this->tradeService->update($previousTrade, $request->input('price'), $pln);
 
-            Notification::route('telegram', self::CHAT_ID)
+            Notification::route('telegram', config('services.telegram-bot-api.telegram_bot_chat_id'))
                 ->notify(new TradeClosedNotification($previousTrade));
         }
         $trade = $this->tradeService->create(Trade::SHORT_TYPE, $request->input('price'));
 
-        Notification::route('telegram', self::CHAT_ID)
+        Notification::route('telegram', config('services.telegram-bot-api.telegram_bot_chat_id'))
             ->notify(new TradeOpenedNotification($trade));
 
         return response()->json();
